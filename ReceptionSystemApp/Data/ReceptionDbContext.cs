@@ -7,5 +7,6 @@ namespace ReceptionSystemApp.Data
     {
         public ReceptionDbContext(DbContextOptions<ReceptionDbContext> options) : base(options) { }
         public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<Reception> Receptions { get; set; }
     }
 }
