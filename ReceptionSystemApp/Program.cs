@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ReceptionDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ReceptionConnectionStr")));
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
+builder.Services.AddScoped<IReceptionRepository, ReceptionRepository>();
 
 
 var app = builder.Build();
