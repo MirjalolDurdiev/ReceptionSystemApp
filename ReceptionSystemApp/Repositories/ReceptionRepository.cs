@@ -38,8 +38,28 @@ namespace ReceptionSystemApp.Repositories
                 throw new Exception($"Error occurred while retrieving reception with ID {id}.", ex);
             }
         }
-
         public async Task CreateReception(Reception reception)
+        {
+            if (reception == null)
+            {
+                throw new ArgumentNullException(nameof(reception));
+            }
+
+            try
+            {
+                _dbContext.Receptions.Add(reception);
+                await _dbContext.Receptions.Include(r => r.Visitor).LoadAsync();
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                throw new Exception("Failed to create reception. Please check the provided data.", ex);
+            }
+        }
+
+
+        /*public async Task CreateReception(Reception reception)
         {
             if (reception == null)
             {
@@ -57,7 +77,7 @@ namespace ReceptionSystemApp.Repositories
                 throw new Exception("Failed to create reception. Please check the provided data.", ex);
             }
         }
-
+        */
         public async Task UpdateReception(Reception reception)
         {
             if (reception == null)

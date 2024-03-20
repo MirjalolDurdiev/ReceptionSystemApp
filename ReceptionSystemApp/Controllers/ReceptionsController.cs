@@ -25,14 +25,14 @@ namespace ReceptionSystemApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reception>>> GetReceptions()
         {
-            return await _context.Receptions.ToListAsync();
+            return await _context.Receptions.Include(r => r.Visitor).ToListAsync();
         }
 
         // GET: api/Receptions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Reception>> GetReception(int id)
         {
-            var reception = await _context.Receptions.FindAsync(id);
+            var reception = await _context.Receptions.Include(r => r.Visitor).FirstOrDefaultAsync(a => a.Id == id);
 
             if (reception == null)
             {
@@ -80,6 +80,8 @@ namespace ReceptionSystemApp.Controllers
         {
             _context.Receptions.Add(reception);
             await _context.SaveChangesAsync();
+
+            await _context.Entry(reception).Reference(r => r.Visitor).LoadAsync();
 
             return CreatedAtAction("GetReception", new { id = reception.Id }, reception);
         }
